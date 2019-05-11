@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Search</title>
+  
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/ag-grid-enterprise@16.0.0/dist/ag-grid-enterprise.min.js"></script>
+
+  <style>
+  <!------------------NAVBAR--------------------->
+  body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: Red;
+  color: white;
+}
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #333;
+  text-align: center;
+  position:fixed;
+
+}
+
+  <!------------------END------------------------->
+  
+
+
+  
+  <!---------TABLE DOWNLOAD STARTS HERE------>
+  * 
+
+tbody > tr:nth-of-type(even) {
+    background-color: #daeaff;
+}
+
+button {
+    cursor: pointer;
+    margin-top: 1rem;
+}
+  
+    /* SCROLLBAR STARTS HERE*/
+
+  /* Let's get this party started -------------------------------*/
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(255,0,0,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,0,0,0.4); 
+}
+  
+  
+
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.42em;
+  color:#A7A1AE;
+  background-color:#1F2739;
+}
+
+h1 {
+	font-size: 3em;
+	font-weight: 300;
+	line-height: 1em;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+h2 {
+  font-size:1em; 
+  font-weight: 300;
+  text-align: center;
+  display: block;
+  line-height:1em;
+  padding-bottom: 2em;
+  color: #fff;
+}
+
+h2 a {
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #FFF;
+  text-decoration: none;
+}
+
+.blue { color: #185875; }
+.yellow { color: #FFF842; }
+
+.container th h1 {
+	  font-weight: bold;
+	  font-size: 1em;
+  text-align: left;
+  color: #185875;
+}
+
+.container td {
+	  font-weight: normal;
+	  font-size: 1em;
+  -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+	   -moz-box-shadow: 0 2px 2px -2px #0E1119;
+	        box-shadow: 0 2px 2px -2px #0E1119;
+}
+
+.container {
+	  text-align: left;
+	  overflow: hidden;
+	  width: 80%;
+	  margin: 0 auto;
+  display: table;
+  padding: 0 0 8em 0;
+}
+
+.container td, .container th {
+	  padding-bottom: 2%;
+	  padding-top: 2%;
+  padding-left:2%;  
+}
+
+/* Background-color of the odd rows */
+.container tr:nth-child(odd) {
+	  background-color: #323C50;
+}
+
+/* Background-color of the even rows */
+.container tr:nth-child(even) {
+	  background-color: #2C3446;
+}
+
+.container th {
+	  background-color: #1F2739;
+}
+
+.container td:first-child { color: #FFF; }
+
+.container tr:hover {
+   background-color: #464A52;
+-webkit-box-shadow: 0 6px 6px -6px #0E1119;
+	   -moz-box-shadow: 0 6px 6px -6px #0E1119;
+	        box-shadow: 0 6px 6px -6px #0E1119;
+}
+
+.container td:hover {
+  background-color: #FFF842;
+  color: #403E10;
+  font-weight: bold;
+  
+  box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px, #7F7C21 -3px 3px, #7F7C21 -4px 4px, #7F7C21 -5px 5px, #7F7C21 -6px 6px;
+  transform: translate3d(6px, -6px, 0);
+  
+  transition-delay: 0s;
+	  transition-duration: 0.4s;
+	  transition-property: all;
+  transition-timing-function: line;
+}
+
+@media (max-width: 800px) {
+.container td:nth-child(4),
+.container th:nth-child(4) { display: none; }
+}
+  
+  
+#annotations {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 65%;
+}
+
+#annotations td, #annotations th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#annotations tr:nth-child(even){background-color: #00000;}
+
+#annotations tr:hover {background-color: #B75656;}
+
+#annotations th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    color: white;
+}
+
+
+  </style>
+  
+  
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='css/header.css') }}" rel="stylesheet" />
+
+  
+
+<body>
+
+<header>
+
+<div class="topnav">
+  <a class="active" href="#home">Search</a>
+  <a href="#news">Documentation</a>
+  <a href="#contact">Contact</a>
+  <a href="#about">About</a>
+  
+</div>
+<div class="dna">
+  {% for i in range(60) %}
+  <div class="ele">
+    <div class="dot"></div>
+  </div>
+  {% endfor %}
+</div>
+
+</header>
+
+
+
+  
+  <h1>Annotations</h1><br>
+  <div style="overflow:auto;height:300px;width:1000px;margin: 0px auto;">
+
+  <table align="center" id="annotations" class = "container">
+{% for row in annotations[0] %}
+	<th>     {{ row }}</th>
+{% endfor %}
+<tr>
+
+{% for i in range(length) %}
+<tr>
+ <td>{{annotations[i]["STOP"]}}</td>
+ <td>{{annotations[i]["GENE_ID"]}}</td>
+ <td>{{annotations[i]["EXON_ID"]}}</td>
+ <td>{{annotations[i]["START"]}}</td>
+ <td>{{annotations[i]["TRANSCRIPT_ID"]}}</td>
+ <td>{{annotations[i]["STRAND"]}}</td>
+ <td>{{annotations[i]["CHROM"]}}</td>
+ <td>{{annotations[i]["GENE_NAME"]}}</td>
+
+
+
+ </tr>
+  {% endfor %}
+
+  </tr>
+  </table>
+  </div>
+  
+  <br><br>
+
+
+<!--______END OF ANNOTATIONS____________--> 
+<h1 align="center">Binding Site | Guide RNA | Exon Expression | Peek Liver</h1><br>
+<div style="overflow:auto;height:px;width:1000px;margin: 0px auto;">
+
+  <!--DATA FOR TABLE-->
+  <div style="width: 900px;">
+    <div style="padding: 4px">
+        <div style="float: right;">
+            <input type="text" id="quickFilterInput" placeholder="Type text to filter"/>
+        </div>
+        <div style="padding: 4px;">
+            <span id="rowCount"></span>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <div style="width: 100%; height: 400px;"
+        id="bestHtml5Grid"
+        class="ag-theme-dark">
+    </div>
+</div>
+  
+  <script>
+  var ROW_DATA = [
+  {% for i in range(length) %}
+{
+"binding_chr": "{{ bs[i]['CHR'] }}",
+    "binding_start" : "{{ bs[i]['START']  }}",
+	"binding_stop" : "{{ bs[i]['STOP']  }}",
+	"binding_gene" : "{{ bs[i]['GENE']  }}",
+	"binding_cl" : "{{ bs[i]['CELLLINE']  }}",
+	"binding_strand" : "{{ bs[i]['STRAND']  }}",
+	"exon_chr": "{{ exons[i]['CHR'] }}",
+    "exon_start" : "{{ exons[i]['START']  }}",
+	"exon_STOP" : "{{ exons[i]['STOP']  }}",
+	"exon_strand" : "{{ exons[i]['STRAND']  }}",
+	"exon_min" : "{{ exons[i]['MIN']  }}",
+	"exon_max" : "{{ exons[i]['MAX']  }}",
+	"exon_sum": "{{ exons[i]['SUM'] }}",
+	"sgrna_chr": "{{ sgrna[i]['sgRNA_CHR'] }}",
+    "sgrna_start" : "{{ sgrna[i]['sgRNA_START']  }}",
+	"sgrna_STOP" : "{{ sgrna[i]['sgRNA_END']  }}",
+	"sgrna_length" : "{{ sgrna[i]['Length']  }}",
+	"sgrna_orientation" : "{{ sgrna[i]['Orientation']  }}",
+	"sgrna_flank" : "{{ sgrna[i]['sgRNA+PAM+7bpFlank']  }}",
+	"sgrna_cor": "{{ sgrna[i]['sgRNA_Cor(hg19_4_navigation)'] }}",
+	"sgrna_distance" : "{{ sgrna[i]['Distance_of_PAM_from_BS_mid']  }}",
+    "sgrna_efficiency" : "{{ sgrna[i]['Efficiency'] }}",
+	"sgrna_specificity" : "{{ sgrna[i]['Specificity']  }}",
+	"sgrna_dhs" : "{{ sgrna[i]['sgRNA_DHS_overlap']  }}",
+	"bs_chr" : "{{ sgrna[i]['BS_CHR']  }}",
+	"bs_start" : "{{ sgrna[i]['BS_START']  }}",
+	"bs_stop" : "{{ sgrna[i]['BS_END']  }}",
+	"sgrna_rbp" : "{{ sgrna[i]['BS_RBP']  }}",
+	"sgrna_celltype" : "{{ sgrna[i]['BS_CELL_TYPE']  }}",
+	"peek_bs" : "{{ peek[i]['binding_site']  }}",
+	"peek_gene" : "{{ peek[i]['gene_of_bs']  }}",
+	"peek_exon" : "{{ peek[i]['exon']  }}",
+	"peek_gene_exon" : "{{ peek[i]['gene_exon']  }}",
+	"peek_pval" : "{{ peek[i]['p-value']  }}",
+	"peek_fdr": "{{ peek[i]['FDR'] }}",
+	"gwas_pvalue_mlog": "{{ gwas_value[i]['PVALUE_MLOG'] }}",
+	"gwas_or_beta": "{{ gwas_value[i]['OR or BETA'] }}",
+	"gwas_snp_gene_id": "{{ gwas_value[i]['SNP_GENE_IDS'] }}",
+	"gwas_disease_trait": "{{ gwas_value[i]['DISEASE/TRAIT'] }}",
+	"gwas_mapped_trait_uri": "{{ gwas_value[i]['MAPPED_TRAIT_URI'] }}",
+	"gwas_mapped_trait": "{{ gwas_value[i]['MAPPED_TRIAT'] }}",
+	"gwas_link": "{{ gwas_value[i]['LINK'] }}",
+	"gwas_context": "{{ gwas_value[i]['CONTEXT'] }}",
+	"gwas_date": "{{ gwas_value[i]['DATE'] }}",
+	"gwas_p_value_text": "{{ gwas_value[i]['P-VALUE (TEXT)'] }}",
+	"gwas_95ci_text": "{{ gwas_value[i]['95% CI (TEXT)'] }}",
+	"gwas_first_author": "{{ gwas_value[i]['FIRST AUTHOR'] }}",
+	"gwas_chr_id": "{{ gwas_value[i]['CHR_ID'] }}",
+	"gwas_intergenic": "{{ gwas_value[i]['INTERGENIC'] }}",
+	"gwas_pubmedid": "{{ gwas_value[i]['PUBMEDID'] }}",
+	"gwas_upstream_geneid": "{{ gwas_value[i]['UPSTREA<_GENE_ID'] }}",
+	"gwas_snp_id_current": "{{ gwas_value[i]['SNP_ID_CURRENT'] }}",
+	"gwas_study": "{{ gwas_value[i]['STUDY'] }}",
+	"gwas_merged": "{{ gwas_value[i]['MERGED'] }}",
+	"gwas_cnv": "{{ gwas_value[i]['CNV'] }}",
+	"gwas_snps": "{{ gwas_value[i]['SNPS'] }}",
+	"gwas_platform_illumina": "{{ gwas_value[i]['PLATFORM [SNPS PASSING QC]'] }}",
+	"gwas_initial_sample_size": "{{ gwas_value[i]['INITIAL SAMPLE SIZE'] }}",
+	"gwas_risk_allele": "{{ gwas_value[i]['RISK ALLELE FREQUENCY'] }}",
+	"gwas_chr_pos": "{{ gwas_value[i]['CHR_POS'] }}",
+	"gwas_mapped_gene": "{{ gwas_value[i]['MAPPED_GENE'] }}",
+	"gwas_p_value": "{{ gwas_value[i]['P-VALUE'] }}",
+	"gwas_downstream_geneid": "{{ gwas_value[i]['DOWNSTREAM_GENE_ID'] }}",
+	"gwas_strongest_snp": "{{ gwas_value[i]['STRONGEST SNP-RISK ALLELE'] }}",
+	"gwas_study_acession": "{{ gwas_value[i]['STUDY ACCESSION'] }}",
+	"gwas_reported_genes": "{{ gwas_value[i]['REPORTED GENE(S)'] }}",
+	"gwas_journal": "{{ gwas_value[i]['JOURNAL'] }}",
+	"gwas_replication_sample": "{{ gwas_value[i]['REPLICATION SAMPLE SIZE'] }}",
+	"gwas_data_catalog": "{{ gwas_value[i]['DATE ADDED TO CATALOG'] }}",
+	"gwas_upstream_genedistance": "{{ gwas_value[i]['UPSTREAM_GENE_DISTANCE'] }}",
+	"gwas_downstream_genedistance": "{{ gwas_value[i]['DOWNSTREAM_GENE_DISTANCE'] }}",
+	"gwas_region": "{{ gwas_value[i]['REGION'] }}",
+
+	
+},
+{% endfor %} 
+];
+
+function createRowData() {
+    return ROW_DATA;
+}
+</script>
+
+  
+  </div>
+  
+  
+<!--INVISIBLE SECTION-->
+<div style="overflow:auto;height:1px;width:1px;margin: 0px auto;">
+
+
+  <table align="center" id="annotations" class="container">
+  <tr>
+<th colspan="6">Binding Site Information</th>
+<th colspan="7">Exon Expression Information</th>
+<th colspan="17">Guide RNA Information</th>
+<th colspan="11">Peek Liver Information</th>
+
+
+</tr>
+{% for site in bs[0] %}
+	<th>     {{ site }}</th>
+{% endfor %}
+{% for site in exons[0] %}
+	<th> {{ site }} </th>
+{% endfor %}
+{% for site in sgrna[0] %}
+	<th> {{ site }} </th>
+{% endfor %}
+{% for site in peek[0] %}
+	<th> {{ site }} </th>
+{% endfor %}
+<!--HEADER ENDS HERE-->
+
+
+{% for site in range(length) %}
+
+<tr>
+{% for row in bs[site] %}
+
+ <td>{{ bs[site][row] }}</td>
+ {% endfor %}
+ {% for row in exons[site] %}
+<td>{{ exons[site][row] }}</td>
+ {% endfor %}
+ {% for row in sgrna[site] %}
+<td>{{ sgrna[site][row] }}</td>
+ {% endfor %}
+{% for row in peek[site] %}
+<td>{{ peek[site][row] }}</td>
+ {% endfor %}
+ {% for row in gwas_value[site] %}
+<td>{{ gwas_value[site][row] }}</td>
+ {% endfor %}
+  </tr>
+ {% endfor %}
+
+  </table>
+
+  </div>
+  
+    <button class="button button3">Export results to CSV file</button>
+
+
+  <script>
+  
+  function download_csv(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV FILE
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // We have to create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Make sure that the link is not displayed
+    downloadLink.style.display = "none";
+
+    // Add the link to your DOM
+    document.body.appendChild(downloadLink);
+
+    // Lanzamos
+    downloadLink.click();
+}
+
+function export_table_to_csv(html, filename) {
+	var csv = [];
+	var rows = document.querySelectorAll("table tr");
+	
+    for (var i = 0; i < rows.length; i++) {
+		var row = [], cols = rows[i].querySelectorAll("td, th");
+		
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+        
+		csv.push(row.join(","));		
+	}
+
+    // Download CSV
+    download_csv(csv.join("\n"), filename);
+}
+
+document.querySelector("button").addEventListener("click", function () {
+    var html = document.querySelector("table").outerHTML;
+	export_table_to_csv(html, "table.csv");
+});
+</script>
+  
+  
+
+<!-- END OF INVISIBLE SECTION-->
+
+
+<BR><BR><BR><BR><BR><BR>
+  
+
+  
+  
+<!--SCRIPT FOR COLLAPSE TABLE-->
+
+
+<script type="text/javascript" src="{{  url_for('static', filename='table/example.js') }}"></script>
+
+  
+  
+  
+  
+<div class="footer">
+<B>IUPUI Bioinformatics</B></div>
+
+
+
+</body>
+
+</html>

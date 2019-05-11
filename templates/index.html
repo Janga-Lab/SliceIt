@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" ><head>
+  <meta charset="UTF-8">
+  <title>Search</title>
+  
+  
+  <!--SUB TABS START-->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <link href="{{ url_for('static', filename='css/subtab.css') }}" rel="stylesheet" />
+
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#tabs" ).tabs();
+  } );
+  </script>
+    <!--SUB TABS END-->
+    
+
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: Red;
+  color: white;
+}
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #333;
+  text-align: center;
+  position:fixed;
+
+}
+<!--HEADER--->
+.header{width:100%}
+</style>
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+
+<link href="{{ url_for('static', filename='css/header.css') }}" rel="stylesheet" />
+
+<!--SCRIPT FOR GENE NAME-->
+<script>
+$(function () {
+    var select = $('select.select');
+    select.change(function () {
+        select.not(this).val(this.value);
+    });
+});
+</script>
+  
+</head>
+
+<body>
+<!--BACKGROUND-->
+
+
+<div class="topnav">
+  <a class="active" href="#home">Search</a>
+  <a href="#news">Documentation</a>
+  <a href="#contact">Contact</a>
+  <a href="#about">About</a>
+</div>
+
+<div class="header">
+<div class="dna">
+  {% for i in range(60) %}
+  <div class="ele">
+    <div class="dot"></div>
+  </div>
+  {% endfor %}
+</div>
+</div>
+
+
+
+<div id="tabs" style="background:#585858;border: 0;">
+  <ul>
+    <li style="background:#C94C4C"><a href="#tabs-1"><b>Search By Coordinates</b></a></li>
+    <li style="background: #C94C4C"><a href="#tabs-2"><b>Search By RBP</b></a></li>
+  </ul>
+  <div id="tabs-1">
+     <form class="form-wrapper cf" method="POST" action="{{ url_for('process_data') }}">
+  	<input type="text" placeholder="Enter START and STOP separated by |" required name="search_field">
+	  <button type="submit" value="submit">Search</button>
+	  <input type="hidden" value="ZERO" name="check" />
+	  <div class="styled-select black rounded">
+  <select name="chrom" id="chrom">
+    <option value="chr1">CHR1</option>
+    <option value="chr2">CHR2</option>
+    <option value="chr3">CHR3</option>
+	<option value="chr4">CHR4</option>
+    <option value="chr5">CHR5</option>
+    <option value="chr6">CHR6</option>
+	<option value="chr7">CHR7</option>
+    <option value="chr8">CHR8</option>
+    <option value="chr9">CHR9</option>
+    <option value="chr10">CHR10</option>
+	<option value="chr11">CHR11</option>
+    <option value="chr12">CHR12</option>
+    <option value="chr13">CHR13</option>
+	<option value="chr14">CHR14</option>
+    <option value="chr15">CHR15</option>
+    <option value="chr16">CHR16</option>
+	<option value="chr17">CHR17</option>
+    <option value="chr18">CHR18</option>
+    <option value="chr19">CHR19</option>
+	<option value="chr20">CHR20</option>
+    <option value="chr21">CHR21</option>
+    <option value="chr22">CHR22</option>
+	<option value="chrx">CHRX</option>
+    <option value="chry">CHRY</option>
+  </select>
+</div>
+
+  </form>
+  </div>
+  <div id="tabs-2">
+  <div class="container" align="center">
+    <form class="rbp" method="POST" action="{{ url_for('process_data') }}">
+    <input type="hidden" value="ONE" name="check" />
+
+      <table  bgcolor="#585858">
+      <th colspan="2">
+    <font color="#FFFFFF">     <b> Select your RBP of interest by Name or Ensembl ID:  <br><br> </b> </font>
+
+
+  <select name="rbp" id="rbp" class="select">
+  {% for i in RNA_BINDING_PROTEINS %}
+    <option value= {{ i }}>{{ i }}</option>
+    
+   {% endfor %}
+   <font color="#FFFFFF">OR</font></b>
+     </select>
+ <select name="ens" id="ens" class="select">
+  {% for i in RNA_BINDING_PROTEINS %}
+    <option value= {{ i }}>{{ RNA_BINDING_PROTEINS[i] }}</option>
+    
+   {% endfor %}
+   </th>
+
+
+<tr>
+<td> <font color="#FFFFFF">     <b> Enter minimum specificity: (Optional)  <input type="text" placeholder="*Minimum specificity score" name="specificity"> </b> </font></td>
+
+<td> <font color="#FFFFFF">     <b>  Enter minimum efficiency: (Optional)	<input type="text" placeholder="*Minimum efficiency score" name="efficiency"> </b> </font></td>
+</tr>
+      </table>
+      <center>	  <button type="submit" value="submit">Search</button>
+</center>
+	</form></div>
+    </div>
+  </div>
+ 
+</div>
+ <BR><BR><BR><BR><BR><BR><BR>
+
+</div>
+
+  
+<div class="footer">
+<B>IUPUI Bioinformatics</B></div>
+
+</div>
+
+</body>
+
+</html>
